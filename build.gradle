@@ -1,0 +1,37 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java/"]
+        }
+        resources {
+            srcDirs = ["src/main/resources/"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ["src/test/java"]
+        }
+        resources {
+            srcDirs = ["src/test/resources/"]
+        }
+    }
+}
+
+
+test {
+    environment "APP_ENVIRONMENT", "test"
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}

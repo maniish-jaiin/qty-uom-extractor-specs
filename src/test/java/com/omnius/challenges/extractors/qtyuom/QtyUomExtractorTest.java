@@ -1,21 +1,24 @@
 package com.omnius.challenges.extractors.qtyuom;
 
+import com.omnius.challenges.extractors.qtyuom.utils.LeftMostUOMExtractor;
+import com.omnius.challenges.extractors.qtyuom.utils.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.omnius.challenges.extractors.qtyuom.QtyUomExtractor;
-import com.omnius.challenges.extractors.qtyuom.utils.LeftMostUOMExtractor;
-import com.omnius.challenges.extractors.qtyuom.utils.Pair;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 /**
- * 
- *
  * @author <a href="mailto:damiano@omnius.com">Damiano Giampaoli</a>
  * @since 25 Jan. 2018
  */
-public class QtyUomExtractorTest extends Assert{
-    
+public class QtyUomExtractorTest extends Assert {
+
+    private String regexForCsv;
+    private String filePath;
+
     @Test
     public void extract_whenUOMIstheSecondTokenAndQTYTheFirst() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -25,7 +28,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("40", qty);
         assertEquals("stg.", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_inLongDescription1() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -35,7 +38,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("900", qty);
         assertEquals("mm", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_inLongDescription2() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -45,7 +48,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000", qty);
         assertEquals("mm", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenUOMHasGermanCharacters() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -55,7 +58,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("100", qty);
         assertEquals("stück", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenThereAreSpacesAroundDecimalSeparator() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -65,7 +68,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("10,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparators() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -75,7 +78,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000000000", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparator() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -85,7 +88,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparatorWithNoSpaces() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -95,7 +98,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasNoDigitSeparatorsAndCommaAsDecimalSeparatorWithNoSpaces() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -105,7 +108,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparatorAndOtherDigits1() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -115,7 +118,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparatorAndOtherDigits2() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -125,7 +128,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("21000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparatorAndOtherDigits3() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -135,7 +138,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("331000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparatorAndOtherDigits4() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -145,7 +148,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityNumberHasSpaceDigitSeparatorsAndCommaAsDecimalSeparatorAndOtherDigits5() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -155,7 +158,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("001100000,00", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenQuantityIsSecondToken() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -165,7 +168,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("40", qty);
         assertEquals("stg.", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_issueFRA_332() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -175,7 +178,7 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("1000,00", qty);
         assertEquals("kg", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenDecimalSeparatorIsFirstOccurrence() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
@@ -185,34 +188,64 @@ public class QtyUomExtractorTest extends Assert{
         assertEquals("6", qty);
         assertEquals("stk", uom);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenDescriptionIsNull() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
         Pair<String, String> result = matcher.extract(null);
         assertNull(result);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenDescriptionIsEmpty() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
         Pair<String, String> result = matcher.extract("");
         assertNull(result);
     }
-    
+
     @Test
     public void extractQTYandUOM_whenDescriptionIsMadeOfBlankspaces() {
         QtyUomExtractor matcher = new LeftMostUOMExtractor();
         Pair<String, String> result = matcher.extract("\t\t\n   ");
         assertNull(result);
     }
-    
+
     @Test
-    public void computeAccuracy_checkIsHigherThan20Percent() {
+    public void computeAccuracy_checkIsHigherThan20Percent() throws IOException {
         // Load provided CSV
         // For each line in the CSV run the LeftMostUOMExtractor
         // calculate how many corrected guess your algorithm compute
         // Assert the accuracy higher than 20%
+
+        String line;
+        int passedCases = 0;
+        int total = 0;
+        filePath = "src/test/resources/qty_uom_challenge_dataset_clean.csv";
+        BufferedReader reader = new BufferedReader(
+                new FileReader(filePath));
+        while ((line = reader.readLine()) != null) {
+            QtyUomExtractor matcher = new LeftMostUOMExtractor();
+            regexForCsv = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+            String[] tokens = line.split(regexForCsv, -1);
+            if (tokens.length == 3) {
+                total++;
+                String t = tokens[0];
+                Pair<String, String> result = matcher.extract(t.replace("\"", ""));
+                if (result != null) {
+                    String qty = result.getFirst();
+                    String uom = result.getSecond();
+                    if (tokens[1].replace("\"", "").equals(qty)
+                            && tokens[2].replace("\"", "").equals(uom)) {
+                        passedCases++;
+                    }
+                }
+            }
+        }
+        double accuracy = ((double) passedCases / total) * 100;
+        assertTrue(accuracy > 20);
+        assertEquals(100.0, accuracy, 0);
+
+        reader.close();
     }
 }
 
